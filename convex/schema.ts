@@ -54,6 +54,7 @@ export default defineSchema({
     type: v.union(v.literal("like"), v.literal("comment"), v.literal("follow")),
     postId: v.optional(v.id("posts")),
     commentId: v.optional(v.id("comments")),
+    isRead: v.optional(v.boolean()),
   }).index("by_receiver", ["receiverId"]),
 
   bookmarks: defineTable({
@@ -63,4 +64,14 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_post", ["postId"])
     .index("by_both", ["userId", "postId"]),
+
+  stories: defineTable({
+    userId: v.id("users"),
+    imageUrl: v.string(),
+    storageId: v.id("_storage"),
+    expiresAt: v.number(), // Timestamp закінчення дії історії (24 години)
+    views: v.number(),     // Кількість переглядів
+  })
+    .index("by_user", ["userId"])
+    .index("by_expires", ["expiresAt"]),
 });

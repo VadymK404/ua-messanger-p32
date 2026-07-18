@@ -1,5 +1,5 @@
 import { COLORS } from "@/constants/theme";
-import { styles } from "@/styles/auth.styles"; // Переконайтеся, що шлях правильний
+import { styles } from "@/styles/auth.styles";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -20,8 +20,8 @@ export default function LoginScreen() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // Додатково для реєстрації
-  const [isSignUp, setIsSignUp] = useState(false); // Перемикач Вхід / Реєстрація
+  const [name, setName] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -36,32 +36,45 @@ export default function LoginScreen() {
     }
 
     setIsLoading(true);
+
     try {
+      console.log("========== AUTH START ==========");
+      console.log("Flow:", isSignUp ? "SIGN UP" : "SIGN IN");
+      console.log("Email:", email);
+
       if (isSignUp) {
-        // Реєстрація нового користувача
-        await signIn("password", {
+        const result = await signIn("password", {
           email,
           password,
           name,
           flow: "signUp",
         });
+
+        console.log("SIGN UP RESULT:");
+        console.log(result);
+
         Alert.alert("Успіх", "Акаунт успішно створено!");
       } else {
-        // Вхід в існуючий акаунт
-        await signIn("password", {
+        const result = await signIn("password", {
           email,
           password,
           flow: "signIn",
         });
+
+        console.log("SIGN IN RESULT:");
+        console.log(result);
       }
-      // Після успішного входу InitialLayout автоматично перенаправить на /(tabs)
+
+      console.log("========== AUTH END ==========");
     } catch (err) {
-      console.error("Auth Error", err);
+      console.error("AUTH ERROR:");
+      console.error(err);
+
       Alert.alert(
         "Помилка",
         isSignUp
           ? "Не вдалося створити акаунт. Можливо, пошта вже зайнята."
-          : "Неправильний email або пароль.",
+          : "Неправильний email або пароль."
       );
     } finally {
       setIsLoading(false);
@@ -85,13 +98,14 @@ export default function LoginScreen() {
               color={COLORS.primary}
             />
           </View>
+
           <Text style={styles.appName}>UA-Messenger</Text>
+
           <Text style={styles.tagline}>
             {isSignUp ? "create new account" : "find your next adventure"}
           </Text>
         </View>
 
-        {/* Форма введення даних */}
         <View
           style={{
             paddingHorizontal: 24,
@@ -119,6 +133,7 @@ export default function LoginScreen() {
                 color={COLORS.grey}
                 style={{ marginRight: 12 }}
               />
+
               <TextInput
                 style={{
                   flex: 1,
@@ -152,6 +167,7 @@ export default function LoginScreen() {
               color={COLORS.grey}
               style={{ marginRight: 12 }}
             />
+
             <TextInput
               style={{
                 flex: 1,
@@ -186,6 +202,7 @@ export default function LoginScreen() {
               color={COLORS.grey}
               style={{ marginRight: 12 }}
             />
+
             <TextInput
               style={{
                 flex: 1,
@@ -222,13 +239,16 @@ export default function LoginScreen() {
             )}
           </TouchableOpacity>
 
-          {/* Перемикач Вхід / Реєстрація */}
           <TouchableOpacity
             onPress={() => setIsSignUp(!isSignUp)}
             style={{ marginTop: 10 }}
           >
             <Text
-              style={{ color: COLORS.primary, fontSize: 14, fontWeight: "500" }}
+              style={{
+                color: COLORS.primary,
+                fontSize: 14,
+                fontWeight: "500",
+              }}
             >
               {isSignUp
                 ? "Вже є акаунт? Увійти"

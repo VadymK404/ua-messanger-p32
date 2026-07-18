@@ -5,6 +5,9 @@ import { useEffect } from "react";
 
 export default function InitialLayout() {
   const { isAuthenticated, isLoading } = useConvexAuth();
+  console.log("========== AUTH STATE ==========");
+console.log("isLoading:", isLoading);
+console.log("isAuthenticated:", isAuthenticated);
   const segments = useSegments();
   const router = useRouter();
 

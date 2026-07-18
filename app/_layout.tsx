@@ -19,13 +19,9 @@ export default function RootLayout() {
   return (
     <ConvexAuthProvider
       client={convex}
-      storage={
-        Platform.OS === "android" || Platform.OS === "ios"
-          ? secureStorage
-          : undefined
-      }
+      storage={Platform.OS !== "web" ? secureStorage : undefined}
     >
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
         <InitialLayout />
       </SafeAreaView>
     </ConvexAuthProvider>

@@ -47,3 +47,13 @@
     }
   }
 }
+
+
+
+{
+  "expo": {
+    "name": "ua-messanger-p32",
+    "slug": "ua-messanger-p32",
+    "version": "1.0.0"
+  }
+}
